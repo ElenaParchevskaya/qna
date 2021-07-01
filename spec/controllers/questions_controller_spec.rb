@@ -14,4 +14,18 @@ RSpec.describe QuestionsController, type: :controller do
       expect(response).to render_template :index
     end
   end
+
+  describe 'CET #show' do
+    let(:question) { create(:question) }
+
+    before { get :show, params: { id: question} }
+
+    it 'assigns thw request question to @question' do
+      expect(assigns(:question)).to eq question
+    end
+
+    it 'renders index show' do
+      expect(response).to render_template :show
+    end
+  end
 end
