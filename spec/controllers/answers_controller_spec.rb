@@ -38,7 +38,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'does not save answer in the database' do
-        expect { request }.not_to change(question.answers, :count)
+        expect { request }.not_to change(Answer, :count)
       end
 
       it 'renders :new view' do
