@@ -1,1 +1,10 @@
 h1 New Question
+
+= render 'shared/errors', resource: @question
+
+= form_with model: @question, local:true do |f|
+  div = f.label :title
+  div = f.text_field :title
+  div = f.label :body
+  div = f.text_area :body
+  div = f.submit 'Ask'

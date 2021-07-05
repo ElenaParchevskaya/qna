@@ -1,1 +1,32 @@
-h1 Question Show
+h1 Question
+
+h2 = "Title: #{@question.title}"
+div = "Author: #{@question.author.email}"
+div = @question.body
+
+- if current_user&.author?(@question)
+  = link_to 'Delete question', question_path(@question), method: :delete
+
+h2 Answers:
+- if @question.answers.present?
+  ul
+    - @question.answers.each do |answer|
+      li.answer
+        = "Author: #{answer.author.email}"
+        br
+        = answer.body
+        br
+        - if current_user&.author?(answer)
+          = link_to 'Delete answer', answer_path(answer), method: :delete
+- else
+  p No answers
+
+- if current_user
+  = render 'shared/errors', resource: @answer
+
+  = form_with model: [@question, @answer], local: true do |f|
+    div = f.label :body
+    div = f.text_area :body
+    div = f.submit 'Answer'
+- else
+  p You need to be signed in to answer questions

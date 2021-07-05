@@ -1,11 +1,13 @@
 FactoryBot.define do
   factory :answer do
-    body { "MyText" }
-    question
+    body { "MyAnswer" }
+
+    association :question, factory: :question
+    association :author, factory: :user
   end
 
   trait :without_question do
-    body { 'MyText' }
+    body { 'MyAnswer' }
   end
 
   trait :invalid do
