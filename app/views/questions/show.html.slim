@@ -4,7 +4,7 @@ h2 = "Title: #{@question.title}"
 div = "Author: #{@question.author.email}"
 div = @question.body
 
-- if current_user&.author?(@question)
+- if current_user&.author_of?(@question)
   = link_to 'Delete question', question_path(@question), method: :delete
 
 h2 Answers:
@@ -16,7 +16,7 @@ h2 Answers:
         br
         = answer.body
         br
-        - if current_user&.author?(answer)
+        - if current_user&.author_of?(answer)
           = link_to 'Delete answer', answer_path(answer), method: :delete
 - else
   p No answers
