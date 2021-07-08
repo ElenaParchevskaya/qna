@@ -1,29 +1,50 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_question, only: %i[new create]
-  before_action :load_answer, only: %i[destroy]
+  before_action :load_answer, only: %i[destroy edit update mark_best]
 
   def new
     @answer = Answer.new
   end
 
+  def edit; end
+
   def create
     @answer = @question.answers.new(params_answer.merge(author: current_user))
 
     if @answer.save
-      redirect_to @answer.question, notice: 'Your answer successfully created.'
+      flash.now[:notice] = 'Your answer successfully created.'
     else
       @question.reload
-      render 'questions/show'
+      flash.now[:errors] = @answer.errors.full_messages
+    end
+    @new_answer = Answer.new
+  end
+
+  def update
+    if current_user.author_of?(@answer)
+      @answer.update(params_answer)
+      flash.now[:errors] = @answer.errors.full_messages
+    else
+      flash.now[:notice] = 'You must be the author to edit the answer.'
+    end
+  end
+
+  def mark_best
+    @prev_best_answer = @answer.question.best_answer
+    if current_user.author_of?(@answer.question)
+      @answer.mark_as_best_answer
+    else
+      flash[:notice] = 'You must be the author to mark the answer as best.'
     end
   end
 
   def destroy
     if current_user.author_of?(@answer)
       @answer.destroy
-      redirect_to question_path(@answer.question), notice: 'Your answer successfully deleted.'
+      flash.now[:notice] = 'Your answer successfully deleted.'
     else
-      redirect_to question_path(@answer.question), notice: 'You must be the author to delete the answer.'
+      flash.now[:notice] = 'You must be the author to delete the answer.'
     end
   end
 

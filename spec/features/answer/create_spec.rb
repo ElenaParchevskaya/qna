@@ -10,15 +10,18 @@ feature 'User can create answer for question on the question`s show page' do
       visit question_path(question)
     end
 
-    scenario 'with valid parameters' do
+    scenario 'with valid parameters', js: true do
       fill_in 'Body', with: 'Some text'
       click_on 'Answer'
 
       expect(page).to have_content('Your answer successfully created.')
-      expect(page).to have_content('Some text')
+      expect(page).to have_current_path question_path(question), ignore_query: true
+      within '.answers' do
+        expect(page).to have_content('Some text')
+      end
     end
 
-    scenario 'with invalid parameters' do
+    scenario 'with invalid parameters', js: true do
       click_on 'Answer'
       expect(page).to have_content("Body can't be blank")
     end

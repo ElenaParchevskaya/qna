@@ -1,32 +1,37 @@
-h1 Question
+h2 Question
 
-h2 = "Title: #{@question.title}"
-div = "Author: #{@question.author.email}"
-div = @question.body
-
-- if current_user&.author_of?(@question)
-  = link_to 'Delete question', question_path(@question), method: :delete
-
+= render @question
+br
 h2 Answers:
-- if @question.answers.present?
-  ul
-    - @question.answers.each do |answer|
-      li.answer
-        = "Author: #{answer.author.email}"
+
+ul.answers
+  div.best
+    - if @best_answer
+      li.answer id="answer-#{@best_answer.id}"
+        = "Author: #{@best_answer.author.email}"
         br
-        = answer.body
+        = @best_answer.body
         br
-        - if current_user&.author_of?(answer)
-          = link_to 'Delete answer', answer_path(answer), method: :delete
-- else
-  p No answers
+        - if current_user&.author_of?(@best_answer)
+          div
+            = link_to 'Delete answer', answer_path(@best_answer), method: :delete, remote: true
+          div
+            = link_to 'Edit answer', '#', class: 'edit-answer-link', data: { answer_id: @best_answer.id }
+        div.hidden
+          = render '/answers/answer_edit_form', answer: @best_answer
+      p Best!
+  - if @answers.present?
+    = render @answers
+  - else
+    p.no_answers No answers
 
 - if current_user
-  = render 'shared/errors', resource: @answer
+  .new-answer-errors
+    = render 'shared/errors'
 
-  = form_with model: [@question, @answer], local: true do |f|
-    div = f.label :body
-    div = f.text_area :body
-    div = f.submit 'Answer'
+  div.new_answer_container
+    div.new_answer
+      = render '/answers/answer_form', answer: [@question, @answer]
+
 - else
   p You need to be signed in to answer questions

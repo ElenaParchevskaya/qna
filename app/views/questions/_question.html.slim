@@ -1,0 +1,13 @@
+div.question id="question-#{question.id}"
+  .question-errors
+    = render 'shared/errors'
+
+  h4 = "Title: #{question.title}"
+  div = "Author: #{question.author.email}"
+  div = question.body
+
+  - if current_user&.author_of?(question)
+    div = link_to 'Delete question', question_path(question), method: :delete
+    div = link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
+  div.hidden
+    = render 'question_form', question: question, local: false

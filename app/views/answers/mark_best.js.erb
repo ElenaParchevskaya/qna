@@ -1,0 +1,12 @@
+<% if flash[:notice].blank? %>
+  $('.best').empty()
+  $('#answer-<%= @answer.id %>').remove()
+  $('.answers .best').prepend('<%= j render '/answers/answer', answer: @answer %>')
+  $('#answer-<%= @answer.id %> .best-answer-link').remove()
+  $('.answers .best').append('<p>Best!<\/p>')
+  <% if @prev_best_answer %>
+    $('.answers .best').after('<%= j render '/answers/answer', answer: @prev_best_answer %>')
+  <% end %>
+<% else %>
+  $('.notice').html('<%= render 'shared/alerts' %>')
+<% end %>

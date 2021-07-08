@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :load_question, only: %i[show destroy]
+  before_action :load_question, only: %i[show destroy edit update]
 
   def index
     @questions = Question.all
@@ -8,6 +8,8 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = Answer.new(question: @question, author: current_user) if current_user
+    @answers = @question.answers.where.not(id: @question.best_answer_id)
+    @best_answer = @question.best_answer
   end
 
   def new
@@ -16,12 +18,22 @@ class QuestionsController < ApplicationController
 
   def create
     @question = current_user.questions.new(params_question)
-
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
     else
       flash[:errors] = @question.errors.full_messages
       render :new
+    end
+  end
+
+  def edit; end
+
+  def update
+    if current_user.author_of?(@question)
+      @question.update(params_question)
+      flash[:errors] = @question.errors.full_messages
+    else
+      flash[:notice] = 'You must be the author to edit the question.'
     end
   end
 
