@@ -18,7 +18,7 @@ ul.answers
           div
             = link_to 'Edit answer', '#', class: 'edit-answer-link', data: { answer_id: @best_answer.id }
         div.hidden
-          = render '/answers/answer_edit_form', answer: @best_answer
+          = render partial: '/answers/answer_form', locals: { answer: @best_answer, html_data: { id: "edit-answer-#{@best_answer.id}" } }
       p Best!
   - if @answers.present?
     = render @answers
