@@ -1,0 +1,11 @@
+$('.notice').html('<%= render 'shared/alerts' %>')
+
+$('#answer-<%= @answer.id %>').remove()
+
+if ($('.best li').length == 0) {
+  $('.best p').hide()
+}
+
+if ($('.answers li').length == 0){
+  $('.answers').append('<p class="no_answers">No answers<\/p>')
+}

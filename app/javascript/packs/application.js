@@ -7,6 +7,13 @@ import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
+import "bootstrap"
+import "jquery"
+
+global.jQuery, global.$ = require("jquery");
+
+require("../utilities/edit_answer")
+require("../utilities/edit_question")
 
 Rails.start()
 Turbolinks.start()

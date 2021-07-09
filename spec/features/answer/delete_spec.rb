@@ -12,7 +12,7 @@ feature 'User can delete answer' do
         visit question_path(question)
       end
 
-      scenario 'should delete' do
+      scenario 'should delete', js: true do
         expect(page).to have_content(answer.body)
 
         click_on('Delete answer')
@@ -32,7 +32,7 @@ feature 'User can delete answer' do
         visit question_path(question)
       end
 
-      scenario 'should not delete' do
+      scenario 'should not delete', js: true do
         expect(page).not_to have_content('Delete answer')
       end
     end
@@ -43,7 +43,7 @@ feature 'User can delete answer' do
     given(:answer) { create(:answer) }
     given(:question) { answer.question }
 
-    scenario 'can`t delete answer' do
+    scenario 'can`t delete answer', js: true do
       visit question_path(question)
 
       expect(page).not_to have_content('Delete answer')

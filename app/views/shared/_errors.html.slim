@@ -1,5 +1,6 @@
-- if resource&.errors.present?
-  b= "#{resource.errors.count} error(s) detected: "
+- if flash[:errors].present?
+  b = "#{flash[:errors].count} error(s) detected: "
   ul
-    -resource.errors.full_messages.each do |message|
-      li = message
+  - flash[:errors].each do |error|
+    li
+      = error 

@@ -12,6 +12,13 @@ feature 'Someone can get list of answers' do
         expect(page).to have_content body
       end
     end
+
+    scenario 'show list with best answer' do
+      question.answers.first.mark_as_best_answer
+      visit question_path(question)
+
+      expect(page).to have_content 'Best!'
+    end
   end
 
   describe 'when question has not answers' do
