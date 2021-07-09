@@ -7,12 +7,9 @@ li.answer id="answer-#{answer.id}"
   div
     = answer.body
 
-  - if answer.files.attached?
-    - answer.files.each do |file|
-      p= link_to file.filename.to_s, url_for(file)
-
-
-
+  div
+    - if answer.files.attached?
+      = render partial: 'attachments/attachment', collection: answer.files
 
   - if current_user&.author_of?(answer)
     div
