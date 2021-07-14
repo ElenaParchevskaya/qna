@@ -12,6 +12,12 @@ div.question id="question-#{question.id}"
   -if question.files.attached?
     = render partial: 'attachments/attachment', collection: question.files
 
+  - if question.award.present?
+    .question-award
+      h3 = "For the best answer you will receive #{question.award.name}"
+      .question-award-image
+        = image_tag question.award.image, size:"200x200"
+
   - if current_user&.author_of?(question)
     div = link_to 'Delete question', question_path(question), method: :delete
     div = link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }

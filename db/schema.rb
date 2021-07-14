@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_14_113919) do
+ActiveRecord::Schema.define(version: 2021_07_14_163055) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,16 @@ ActiveRecord::Schema.define(version: 2021_07_14_113919) do
     t.index ["user_id"], name: "index_answers_on_user_id"
   end
 
+  create_table "awards", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "question_id", null: false
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["question_id"], name: "index_awards_on_question_id"
+    t.index ["user_id"], name: "index_awards_on_user_id"
+  end
+
   create_table "links", force: :cascade do |t|
     t.string "name", null: false
     t.string "url", null: false
@@ -89,6 +99,8 @@ ActiveRecord::Schema.define(version: 2021_07_14_113919) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users"
+  add_foreign_key "awards", "questions"
+  add_foreign_key "awards", "users"
   add_foreign_key "questions", "answers", column: "best_answer_id"
   add_foreign_key "questions", "users"
 end
