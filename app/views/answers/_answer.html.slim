@@ -7,6 +7,10 @@ li.answer id="answer-#{answer.id}"
   div
     = answer.body
 
+  div
+    - if answer.files.attached?
+      = render partial: 'attachments/attachment', collection: answer.files
+
   - if current_user&.author_of?(answer)
     div
       = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
@@ -14,7 +18,7 @@ li.answer id="answer-#{answer.id}"
       = link_to 'Edit answer', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
 
   div.hidden
-    = render '/answers/answer_edit_form', answer: answer
+    = render partial: '/answers/answer_form', locals: { answer: answer, html_data: { id: "edit-answer-#{answer.id}" } }
 
   -if current_user&.author_of?(answer.question)
     div

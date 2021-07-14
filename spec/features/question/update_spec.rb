@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'User can update question' do
   describe 'authenticated user' do
-    describe 'is author of question' do
+    describe 'is author of question', js: true do
       given(:question) { create(:question) }
       given(:user) { question.author }
 
@@ -11,7 +11,7 @@ feature 'User can update question' do
         visit question_path(question)
       end
 
-      scenario 'should update', js: true do
+      scenario 'should update' do
         click_on 'Edit question'
 
         within "#question-#{question.id}" do
@@ -22,7 +22,7 @@ feature 'User can update question' do
         expect(page).to have_content 'Edited Question'
       end
 
-      scenario 'updates a question with errors', js: true do
+      scenario 'updates a question with errors' do
         click_on 'Edit question'
 
         within "#question-#{question.id}" do
@@ -31,6 +31,42 @@ feature 'User can update question' do
         end
 
         expect(page).to have_content "Body can't be blank"
+      end
+
+      scenario 'adds attached files' do
+        click_on 'Edit question'
+
+        within "#question-#{question.id}" do
+          expect(page).to have_no_link 'rails_helper.rb'
+          expect(page).to have_no_link 'spec_helper.rb'
+
+          attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+           click_on 'Edit'
+
+          expect(page).to have_link 'rails_helper.rb'
+          expect(page).to have_link 'spec_helper.rb'
+        end
+      end
+
+      context 'when question has file' do
+        background do
+          question.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename: 'rails_helper.rb')
+          visit question_path(question)
+          click_on 'Edit question'
+        end
+
+        scenario 'adding attached files to question with files' do
+          within "#question-#{question.id}" do
+            expect(page).to have_content 'rails_helper.rb'
+            expect(page).to have_no_content 'spec_helper.rb'
+
+            attach_file 'Files', ["#{Rails.root}/spec/spec_helper.rb"]
+            click_on 'Edit'
+
+            expect(page).to have_content 'rails_helper.rb'
+            expect(page).to have_content 'spec_helper.rb'
+          end
+        end
       end
     end
 

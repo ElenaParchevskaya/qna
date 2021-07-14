@@ -6,6 +6,9 @@ div.question id="question-#{question.id}"
   div = "Author: #{question.author.email}"
   div = question.body
 
+  -if question.files.attached?
+    = render partial: 'attachments/attachment', collection: question.files
+
   - if current_user&.author_of?(question)
     div = link_to 'Delete question', question_path(question), method: :delete
     div = link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
