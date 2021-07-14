@@ -1,13 +1,15 @@
-= form_with model: answer, html: try(:html_data) || {}, local: false do |answer|
+= form_with model: answer, html: try(:html_data) || {}, local: false do |f|
   div
-    = answer.label :body
+    = f.label :body
   div
-    = answer.text_area :body
+    = f.text_area :body
+
+  = render 'links/links_form', f: f
 
   div
-    = answer.label :files
+    = f.label :files
   div
-    = answer.file_field :files, multiple: true, direct_upload: true
+    = f.file_field :files, multiple: true, direct_upload: true
 
   div
-    = answer.submit 'Answer'
+    = f.submit 'Answer'

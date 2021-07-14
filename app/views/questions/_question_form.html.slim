@@ -5,7 +5,9 @@
   div = f.label :body
   div = f.text_area :body
 
+  = render 'links/links_form', f: f
+
   div = f.label :files
   div = f.file_field :files, multiple: true, direct_upload: true
-
+  
   div = f.submit 'Ask'

@@ -1,4 +1,6 @@
 class Question < ApplicationRecord
+  include Linkable
+  
   has_many :answers, dependent: :destroy
   belongs_to :author, class_name: 'User', foreign_key: 'user_id'
   belongs_to :best_answer, class_name: 'Answer', optional: true

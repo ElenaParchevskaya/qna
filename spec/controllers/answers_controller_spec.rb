@@ -53,6 +53,54 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to render_template :create
       end
     end
+
+    context 'with attached files' do
+      let(:last_answer) { Answer.order(:created_at).last }
+
+      it 'attaches files to answer' do
+        post :create,
+             params: {
+                question_id: question.id,
+                answer: { body: 'Body', files: [fixture_file_upload('spec/spec_helper.rb')] },
+                format: :js }
+        expect(Answer.last.files).to be_attached
+        expect(last_answer.files).to be_attached
+      end
+    end
+
+    context 'with links' do
+      context 'when links is valid' do
+        let(:last_answer) { Answer.order(:created_at).last }
+
+        it 'adds links to answer' do
+          post :create,
+               params: { question_id: question.id,
+                         answer: { body: 'Body',
+                                    links_attributes: {
+                                      0 => { name: 'Thinknetica', url: 'https://thinknetica.com' },
+                                      1 => { name: 'Wiki', url: 'https://www.wikipedia.org' }
+                                    } }, format: :js }
+          expect(last_answer.links.pluck(:name).sort).to eq %w[ Thinknetica Wiki]
+          expect(last_answer.links.pluck(:url).sort).to eq ['https://thinknetica.com', 'https://www.wikipedia.org']
+        end
+      end
+
+      context 'when links is not valid' do
+        subject do
+          post :create,
+               params: {
+                  question_id: question.id,
+                  answer: { body: 'Body', links_attributes: { 0 => { url: 'https://thinknetica.com' } } },
+                  format: :js }
+        end
+
+        it 'does not create new answer' do
+          expect { subject }.not_to change(Answer, :count)
+        end
+
+        it { is_expected.to render_template(:create) }
+      end
+    end
   end
 
   describe 'PATCH #update' do

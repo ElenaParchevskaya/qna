@@ -6,6 +6,9 @@ div.question id="question-#{question.id}"
   div = "Author: #{question.author.email}"
   div = question.body
 
+  .question-links
+    = render question.links
+
   -if question.files.attached?
     = render partial: 'attachments/attachment', collection: question.files
 
