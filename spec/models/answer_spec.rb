@@ -4,6 +4,8 @@ RSpec.describe Answer, type: :model do
   describe 'associations' do
     it { should belong_to(:question) }
     it { should belong_to(:author).class_name('User') }
+    it { should have_many(:links).dependent(:destroy) }
+    it { should accept_nested_attributes_for :links }
   end
 
   describe 'validations' do
@@ -40,6 +42,26 @@ RSpec.describe Answer, type: :model do
 
       it 'does not mark as best' do
         expect(answer.best_answer?).to be false
+      end
+    end
+  end
+
+  context 'when question has an award' do
+    let(:question) { create :question }
+    let(:answers) { create_list :answer, 2, question: question }
+    let!(:award) { create :award, question: question }
+
+    before { answers.second.mark_as_best_answer }
+
+    it 'gives award to the user of the best answer' do
+      expect(answers.second.author.awards).to eq [award]
+    end
+
+    context 'when another user has award of this question' do
+      it 'takes away award from another user' do
+        expect(answers.second.author.awards).to eq [award]
+        answers.first.mark_as_best_answer
+        expect(answers.second.author.awards.reload).to eq []
       end
     end
   end

@@ -51,7 +51,7 @@ class AnswersController < ApplicationController
   private
 
   def params_answer
-    params.require(:answer).permit(:body, files: [])
+    params.require(:answer).permit(:body, files: [], links_attributes: %i[name url])
   end
 
   def load_answer

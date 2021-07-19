@@ -86,6 +86,48 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to render_template :new
       end
     end
+
+    context 'with attached files' do
+      let(:last_question) { Question.order(:created_at).last }
+
+      it 'attaches files to question' do
+        post :create,
+             params: { question: { title: 'Title', body: 'Body', files: [fixture_file_upload('spec/spec_helper.rb')] } }
+        expect(Question.last.files).to be_attached
+        expect(last_question.files).to be_attached
+      end
+    end
+
+    context 'with links' do
+      context 'when links is valid' do
+        let(:last_question) { Question.order(:created_at).last }
+
+        it 'adds links to question' do
+          post :create,
+               params: { question: { title: 'Title', body: 'Body',
+                                      links_attributes: {
+                                        0 => { name: 'Thinknetica', url: 'https://thinknetica.com' },
+                                        1 => { name: 'Wiki', url: 'https://www.wikipedia.org' }
+                                      } } }
+          expect(last_question.links.pluck(:name).sort).to eq %w[Thinknetica Wiki]
+          expect(last_question.links.pluck(:url).sort).to eq ['https://thinknetica.com', 'https://www.wikipedia.org']
+        end
+      end
+
+      context 'when links is not valid' do
+        subject do
+          post :create,
+               params: { question: { title: 'Title', body: 'Body',
+                                      links_attributes: { 0 => { url: 'https://thinknetica.com' } } } }
+        end
+
+        it 'does not create new question' do
+          expect { subject }.not_to change(Question, :count)
+        end
+
+        it { is_expected.to render_template(:new) }
+      end
+    end
   end
 
   describe 'PATCH #update' do

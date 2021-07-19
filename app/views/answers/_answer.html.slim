@@ -7,6 +7,9 @@ li.answer id="answer-#{answer.id}"
   div
     = answer.body
 
+  .answer-links
+    = render answer.links
+
   div
     - if answer.files.attached?
       = render partial: 'attachments/attachment', collection: answer.files

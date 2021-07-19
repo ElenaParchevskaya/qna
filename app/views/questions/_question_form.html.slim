@@ -5,7 +5,14 @@
   div = f.label :body
   div = f.text_area :body
 
+  = render 'links/links_form', f: f
+
   div = f.label :files
   div = f.file_field :files, multiple: true, direct_upload: true
+
+  .award
+    h3 Award for the best answer
+    = f.fields_for :award do |award_f|
+      = render 'awards/award_fields', f: award_f
 
   div = f.submit 'Ask'

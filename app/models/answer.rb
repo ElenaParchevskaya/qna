@@ -1,4 +1,6 @@
 class Answer < ApplicationRecord
+  include Linkable
+
   belongs_to :question
   belongs_to :author, class_name: 'User', foreign_key: 'user_id'
 
@@ -13,7 +15,10 @@ class Answer < ApplicationRecord
   end
 
   def mark_as_best_answer
-    question.update(best_answer_id: id)
+    transaction do
+      question.update(best_answer_id: id)
+      question.award&.update(user: author)
+    end
   end
 
   private

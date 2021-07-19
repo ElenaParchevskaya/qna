@@ -9,6 +9,7 @@ import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import "bootstrap"
 import "jquery"
+import "@nathanvda/cocoon"
 
 global.jQuery, global.$ = require("jquery");
 

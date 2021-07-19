@@ -1,0 +1,9 @@
+.link id="link-#{link.id}"
+  - if link.gist?
+    .gist-link
+      = javascript_include_tag link.url+".js"
+  - else
+    = link_to link.name, url_for(link.url), target: "_blank"
+
+  - if current_user&.author_of?(link.linkable)
+    = link_to 'Delete link', link_path(link), remote: true, method: :delete
