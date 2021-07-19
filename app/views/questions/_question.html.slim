@@ -12,6 +12,10 @@ div.question id="question-#{question.id}"
   -if question.files.attached?
     = render partial: 'attachments/attachment', collection: question.files
 
+  = render 'votes/rating', votable: question
+  - if signed_in? && !current_user.author_of?(question)
+    = render 'votes/vote', vote: question.vote_of(current_user), votable: question
+
   - if question.award.present?
     .question-award
       h3 = "For the best answer you will receive #{question.award.name}"

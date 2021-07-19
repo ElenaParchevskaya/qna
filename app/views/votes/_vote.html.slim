@@ -1,0 +1,7 @@
+.vote
+  - if vote
+    = vote.like? ? 'You like it!' : 'You dislike it!'
+    = link_to 'Cancel', vote_path(vote), remote: true, method: :delete, data: { type: :json }, class: "cancel-vote-link"
+  - else
+    = vote_link('Like', :like, votable)
+    = vote_link('Dislike', :dislike, votable)
