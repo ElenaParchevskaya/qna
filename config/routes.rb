@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   resources :attachments, only: :destroy
   resources :links, only: :destroy
   resources :awards, only: :index
+  resources :votes, only: %i[create destroy]
 
   root to: 'questions#index'
 end
