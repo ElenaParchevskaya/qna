@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show destroy edit update]
+  after_action :publish_question, only: :create
 
   def index
     @questions = Question.all
@@ -11,6 +12,7 @@ class QuestionsController < ApplicationController
       @answer = Answer.new(question: @question, author: current_user)
       @answer.links.new
     end
+    gon.user_id = current_user&.id
 
     @answers = @question.answers.where.not(id: @question.best_answer_id)
     @best_answer = @question.best_answer
@@ -60,5 +62,16 @@ class QuestionsController < ApplicationController
 
   def load_question
     @question = Question.with_attached_files.find(params[:id])
+  end
+
+  def publish_question
+    return unless @question.valid?
+
+    question_item = ApplicationController.render(
+      partial: 'questions/question_item',
+      locals: { question: @question }
+    )
+
+    ActionCable.server.broadcast('questions', { question_item: question_item })
   end
 end

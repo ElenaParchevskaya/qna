@@ -14,9 +14,10 @@ li.answer id="answer-#{answer.id}"
     - if answer.files.attached?
       = render partial: 'attachments/attachment', collection: answer.files
 
-  = render 'votes/rating', votable: answer
-  - if signed_in? && !current_user.author_of?(answer)
-    = render 'votes/vote', vote: answer.vote_of(current_user), votable: answer
+  div id="votable-answer-#{answer.id}"
+    = render 'votes/rating', votable: answer
+    - if signed_in? && !current_user.author_of?(answer)
+      = render 'votes/vote', vote: answer.vote_of(current_user), votable: answer
 
   - if current_user&.author_of?(answer)
     div
@@ -30,3 +31,5 @@ li.answer id="answer-#{answer.id}"
   -if current_user&.author_of?(answer.question)
     div
       = link_to 'Best answer', mark_best_answer_path(answer), method: :patch, class: 'best-answer-link', remote: true
+
+= render "comments/comments", commentable: answer 

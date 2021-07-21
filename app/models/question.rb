@@ -1,6 +1,7 @@
 class Question < ApplicationRecord
   include Linkable
   include Votable
+  include Commentable
 
   has_many :answers, dependent: :destroy
   belongs_to :author, class_name: 'User', foreign_key: 'user_id'

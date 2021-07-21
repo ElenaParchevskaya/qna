@@ -2,6 +2,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_question, only: %i[new create]
   before_action :load_answer, only: %i[destroy edit update mark_best]
+  after_action :publish_answer, only: :create
 
   def new
     @answer = Answer.new
@@ -49,6 +50,19 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def publish_answer
+    return unless @answer.valid?
+
+    answer_partial = ApplicationController.render(
+      partial: 'answers/answer_pub',
+      locals: { answer: @answer }
+    )
+
+    data = { answer: answer_partial, user_id: current_user.id }
+
+    QuestionChannel.broadcast_to(@answer.question, data)
+  end
 
   def params_answer
     params.require(:answer).permit(:body, files: [], links_attributes: %i[name url])

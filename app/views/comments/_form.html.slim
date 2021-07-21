@@ -1,0 +1,6 @@
+= form_with model: Comment.new, class: 'new-comment', local: false do |f|
+  = hidden_field_tag :commentable_type, commentable.class
+  = hidden_field_tag :commentable_id, commentable.id
+  div = f.label :body, 'New comment'
+  div = f.text_area :body
+  div = f.submit 'Add comment' 

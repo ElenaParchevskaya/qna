@@ -2,7 +2,6 @@ h1 Questions
 
 p= link_to 'Ask question', new_question_path
 
-ul
+ul.questions
   - @questions.each do |question|
-    li
-      = link_to "#{question.title}: #{question.body}", question_path(question)
+    li = render 'question_item', question: question
