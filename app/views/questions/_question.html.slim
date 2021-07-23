@@ -12,9 +12,10 @@ div.question id="question-#{question.id}"
   -if question.files.attached?
     = render partial: 'attachments/attachment', collection: question.files
 
-  = render 'votes/rating', votable: question
-  - if signed_in? && !current_user.author_of?(question)
-    = render 'votes/vote', vote: question.vote_of(current_user), votable: question
+  div id="votable-question-#{question.id}"
+    = render 'votes/rating', votable: question
+    - if signed_in? && !current_user.author_of?(question)
+      = render 'votes/vote', vote: question.vote_of(current_user), votable: question
 
   - if question.award.present?
     .question-award
@@ -27,3 +28,5 @@ div.question id="question-#{question.id}"
     div = link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
   div.hidden
     = render 'question_form', question: question, local: false
+
+= render "comments/comments", commentable: question 

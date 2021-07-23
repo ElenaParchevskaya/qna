@@ -72,4 +72,5 @@ RSpec.describe Answer, type: :model do
 
   it_behaves_like "linkable"
   it_behaves_like "votable"
+  it_behaves_like "commentable"
 end

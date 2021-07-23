@@ -6,8 +6,8 @@ $(document).on('turbolinks:load', function() {
 
     if ($(`#question-${questionId} .hidden`).is(":hidden")){
       $(`#question-${questionId} .hidden`).show()
-      $(`#question-${questionId} input[type=submit]`).val('Edit')
+      $(`#question-${questionId} .hidden input[type=submit]`).val('Edit')
     } else {
       $(`#question-${questionId} .hidden`).hide()}
   })
-}); 
+});

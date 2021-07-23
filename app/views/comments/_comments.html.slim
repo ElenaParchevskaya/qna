@@ -1,0 +1,7 @@
+div id="#{commentable.class.to_s.underscore}-#{commentable.id}-comments"
+  h2 Comments:
+  .comments-list
+    = render commentable.comments
+
+  - if current_user
+    = render 'comments/form', commentable: commentable 

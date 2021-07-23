@@ -1,0 +1,41 @@
+li.answer id="answer-#{answer.id}"
+  .answer-errors
+    = render 'shared/errors'
+
+  div
+    = "Author: #{answer.author.email}"
+  div
+    = answer.body
+
+  .answer-links
+    - answer.links.each do |link|
+      .link id="link-#{link.id}"
+        - if link.gist?
+          .gist-link
+            = javascript_include_tag link.url+".js"
+        - else
+          = link_to link.name, url_for(link.url), target: "_blank"
+
+  div
+    - if answer.files.attached?
+      - answer.files.each do |file|
+        div id="attachment-id-#{file.id}"
+          div = link_to file.filename.to_s, url_for(file)
+
+  div id="votable-answer-#{answer.id}"
+    = render 'votes/rating', votable: answer
+
+  div.hidden
+    = render partial: '/answers/answer_form', locals: { answer: answer, html_data: { id: "edit-answer-#{answer.id}" } }
+
+  div id="#{answer.class.to_s.underscore}-#{answer.id}-comments"
+    h2 Comments:
+    .comments-list
+      = render answer.comments
+
+    = form_with model: Comment.new, class: 'new-comment', local: false do |f|
+      = hidden_field_tag :commentable_type, answer.class
+      = hidden_field_tag :commentable_id, answer.id
+      div = f.label :body, 'New comment'
+      div = f.text_area :body
+      div = f.submit 'Add comment'

@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   resources :links, only: :destroy
   resources :awards, only: :index
   resources :votes, only: %i[create destroy]
+  resources :comments, only: :create
 
   root to: 'questions#index'
+
+  mount ActionCable.server => '/cable'
 end
