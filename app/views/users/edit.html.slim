@@ -1,0 +1,8 @@
+= render 'shared/errors', resource: @user
+
+= form_with url: user_path, method: :patch, local: true do |f|
+  = f.hidden_field :provider, value: params[:provider]
+  = f.hidden_field :uid, value: params[:uid]
+  = f.label :email
+  = f.email_field :email
+  = f.submit 'Set email'
