@@ -215,9 +215,9 @@ RSpec.describe QuestionsController, type: :controller do
         expect { http_request }.not_to change(Question, :count)
       end
 
-      it 'renders :show view' do
+       it 'return forbidden status' do
         http_request
-        expect(response).to render_template :show
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end

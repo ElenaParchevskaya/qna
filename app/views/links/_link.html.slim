@@ -5,5 +5,5 @@
   - else
     = link_to link.name, url_for(link.url), target: "_blank"
 
-  - if current_user&.author_of?(link.linkable)
+  - if can?(:destroy, link)
     = link_to 'Delete link', link_path(link), remote: true, method: :delete

@@ -14,7 +14,7 @@ div.question id="question-#{question.id}"
 
   div id="votable-question-#{question.id}"
     = render 'votes/rating', votable: question
-    - if signed_in? && !current_user.author_of?(question)
+    - if signed_in? && can?(:create_vote, question)
       = render 'votes/vote', vote: question.vote_of(current_user), votable: question
 
   - if question.award.present?
@@ -23,10 +23,11 @@ div.question id="question-#{question.id}"
       .question-award-image
         = image_tag question.award.image, size:"200x200"
 
-  - if current_user&.author_of?(question)
+  - if can?(:destroy, question)
     div = link_to 'Delete question', question_path(question), method: :delete
+  - if can?(:update, question)
     div = link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
   div.hidden
     = render 'question_form', question: question, local: false
 
-= render "comments/comments", commentable: question 
+= render "comments/comments", commentable: question

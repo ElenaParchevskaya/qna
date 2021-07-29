@@ -179,12 +179,12 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'has best answer' do
         http_request
-        expect(question.best_answer_id).to eq nil
+        expect(question.reload.best_answer_id).to eq nil
       end
 
-      it 'renders mark_best view' do
+      it 'return forbidden status' do
         http_request
-        expect(flash[:notice]).to eq 'You must be the author to mark the answer as best.'
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end
@@ -212,9 +212,9 @@ RSpec.describe AnswersController, type: :controller do
         expect { http_request }.not_to change(Answer, :count)
       end
 
-      it 'renders :destroy view' do
+      it 'return forbidden status' do
         http_request
-        expect(response).to render_template :destroy
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end

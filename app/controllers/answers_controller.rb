@@ -4,6 +4,8 @@ class AnswersController < ApplicationController
   before_action :load_answer, only: %i[destroy edit update mark_best]
   after_action :publish_answer, only: :create
 
+  authorize_resource
+
   def new
     @answer = Answer.new
   end
@@ -23,30 +25,18 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if current_user.author_of?(@answer)
-      @answer.update(params_answer)
-      flash.now[:errors] = @answer.errors.full_messages
-    else
-      flash.now[:notice] = 'You must be the author to edit the answer.'
-    end
+    @answer.update(params_answer)
+    flash.now[:errors] = @answer.errors.full_messages
   end
 
   def mark_best
     @prev_best_answer = @answer.question.best_answer
-    if current_user.author_of?(@answer.question)
-      @answer.mark_as_best_answer
-    else
-      flash[:notice] = 'You must be the author to mark the answer as best.'
-    end
+    @answer.mark_as_best_answer
   end
 
   def destroy
-    if current_user.author_of?(@answer)
-      @answer.destroy
-      flash.now[:notice] = 'Your answer successfully deleted.'
-    else
-      flash.now[:notice] = 'You must be the author to delete the answer.'
-    end
+    @answer.destroy
+    flash.now[:notice] = 'Your answer successfully deleted.'
   end
 
   private
