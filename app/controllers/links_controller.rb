@@ -1,13 +1,9 @@
 class LinksController < ApplicationController
   before_action :authenticate_user!
 
+  load_and_authorize_resource
+
   def destroy
-    @link = Link.find(params[:id])
-    if current_user.author_of?(@link.linkable)
-      @link.destroy
-      flash.now[:notice] = 'Your link successfully deleted.'
-    else
-      flash.now[:notice] = 'You must be the author to delete the link.'
-    end
+    @link.destroy
   end
 end

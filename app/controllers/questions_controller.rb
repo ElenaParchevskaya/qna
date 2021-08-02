@@ -3,6 +3,8 @@ class QuestionsController < ApplicationController
   before_action :load_question, only: %i[show destroy edit update]
   after_action :publish_question, only: :create
 
+  authorize_resource
+
   def index
     @questions = Question.all
   end
@@ -37,21 +39,13 @@ class QuestionsController < ApplicationController
   def edit; end
 
   def update
-    if current_user.author_of?(@question)
-      @question.update(params_question)
-      flash[:errors] = @question.errors.full_messages
-    else
-      flash[:notice] = 'You must be the author to edit the question.'
-    end
+    @question.update(params_question)
+    flash[:errors] = @question.errors.full_messages
   end
 
   def destroy
-    if current_user.author_of?(@question)
-      @question.destroy
-      redirect_to questions_path, notice: 'Your question successfully deleted.'
-    else
-      render :show, notice: 'You must be the author to delete the question.'
-    end
+    @question.destroy
+    redirect_to questions_path, notice: 'Your question successfully deleted.'
   end
 
   private

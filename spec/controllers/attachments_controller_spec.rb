@@ -28,8 +28,9 @@ RSpec.describe AttachmentsController, type: :controller do
           expect(question.reload.files).to be_attached
         end
 
-        it 'renders :destroy template' do
-          expect(flash[:notice]).to eq 'You must be the author to delete the attachment'
+        it 'return forbidden status' do
+          delete_request
+          expect(response).to have_http_status(:forbidden)
         end
       end
     end
@@ -60,8 +61,9 @@ RSpec.describe AttachmentsController, type: :controller do
           expect(answer.reload.files).to be_attached
         end
 
-        it 'renders :destroy template' do
-          expect(flash[:notice]).to eq 'You must be the author to delete the attachment'
+        it 'return forbidden status' do
+          delete_request
+          expect(response).to have_http_status(:forbidden)
         end
       end
     end

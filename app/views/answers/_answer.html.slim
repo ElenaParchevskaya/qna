@@ -16,20 +16,21 @@ li.answer id="answer-#{answer.id}"
 
   div id="votable-answer-#{answer.id}"
     = render 'votes/rating', votable: answer
-    - if signed_in? && !current_user.author_of?(answer)
+    - if signed_in? && can?(:create_vote, answer)
       = render 'votes/vote', vote: answer.vote_of(current_user), votable: answer
 
-  - if current_user&.author_of?(answer)
+  - if can?(:destroy, answer)
     div
       = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
+  - if can?(:update, answer)
     div
       = link_to 'Edit answer', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
 
   div.hidden
     = render partial: '/answers/answer_form', locals: { answer: answer, html_data: { id: "edit-answer-#{answer.id}" } }
 
-  -if current_user&.author_of?(answer.question)
+  - if can?(:mark_best, answer)
     div
       = link_to 'Best answer', mark_best_answer_path(answer), method: :patch, class: 'best-answer-link', remote: true
 
-= render "comments/comments", commentable: answer 
+= render "comments/comments", commentable: answer
