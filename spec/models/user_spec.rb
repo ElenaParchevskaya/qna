@@ -9,6 +9,16 @@ RSpec.describe User, type: :model do
     it { should have_many(:authorizations).dependent(:destroy) }
   end
 
+  it {
+    expect(subject).to have_many(:access_grants).class_name('Doorkeeper::AccessGrant')
+                                                .with_foreign_key(:resource_owner_id).dependent(:destroy)
+   }
+
+   it {
+     expect(subject).to have_many(:access_tokens).class_name('Doorkeeper::AccessToken')
+                                                 .with_foreign_key(:resource_owner_id).dependent(:destroy)
+   }
+
   describe '#author_of?' do
     let(:user) { create(:user) }
     let(:question) { create(:question, author: user) }

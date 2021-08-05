@@ -40,6 +40,7 @@ RSpec.configure do |config|
   config.include FeatureHelpers, type: :feature
   config.include ActiveStorageValidations::Matchers
   config.include OmniauthMacros, type: :feature
+  config.include ApiHelpers, type: :request
 
   Capybara.javascript_driver = :selenium_chrome_headless
   Capybara.server_port = 3001

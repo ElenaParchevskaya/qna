@@ -145,50 +145,10 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    context 'when user is the author of question' do
-      let!(:question) { create(:question, author: user) }
-
-      context 'with valid attributes' do
-        subject(:http_request) do
-          patch :update, params: { id: question, question: { body: 'New Question' } }, format: :js
-        end
-
-        it 'changes answer attributes' do
-          http_request
-          question.reload
-          expect(question.body).to eq 'New Question'
-        end
-
-        it 'renders :update view' do
-          http_request
-          expect(response).to render_template :update
-        end
-      end
-
-      context 'with invalid attributes' do
-        subject(:http_request) do
-          patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
-        end
-
-        it 'does not change answer attributes' do
-          expect { http_request }.not_to change(question, :body)
-        end
-
-        it 'renders :update view' do
-          http_request
-          expect(response).to render_template :update
-        end
-      end
-    end
-
-    context 'when user is not the author of question' do
-      subject(:http_request) do
-        patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
-      end
-
-      it 'does not change answer attributes' do
-        expect { http_request }.not_to change(question, :body)
-      end
+    it_behaves_like 'update resource' do
+      let!(:resource) { create :question, author: user }
+      let(:update_attributes) { { title: 'Edited title', body: 'Edited body' } }
+      let(:invalid_attributes) { { title: ' ', body: 'Edited body' } }
     end
   end
 
