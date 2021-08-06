@@ -26,5 +26,7 @@ module Qna
                        routing_specs: false,
                        request_specs: false
     end
+
+    config.active_job.queue_adapter = :sidekiq
   end
 end

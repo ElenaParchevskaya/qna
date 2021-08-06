@@ -1,0 +1,6 @@
+.subscription
+  - if current_user.subscribed?(question)
+    | You are subscribed to this question
+    = link_to 'Unsubscribe', question_subscription_path(question_id: question.id), method: :delete, remote: true
+  - else
+    = link_to 'Subscribe', question_subscription_path(question_id: question.id), method: :post, remote: true

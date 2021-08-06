@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :awards
   has_many :comments
   has_many :authorizations, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
 
   has_many :access_grants,
            class_name: 'Doorkeeper::AccessGrant',
@@ -27,5 +28,9 @@ class User < ApplicationRecord
 
   def admin?
     admin
+  end
+
+  def subscribed?(record)
+    record.subscriptions.where(user_id: id).any?
   end
 end

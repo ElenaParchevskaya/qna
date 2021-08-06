@@ -10,6 +10,8 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
+  after_create :send_notification
+
   before_destroy :clear_best_answer, if: :best_answer?
 
   def best_answer?
@@ -27,5 +29,9 @@ class Answer < ApplicationRecord
 
   def clear_best_answer
     question.update(best_answer: nil)
+  end
+
+  def send_notification
+    NotificationService.new.new_answer(self)
   end
 end

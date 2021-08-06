@@ -16,6 +16,9 @@ div.question id="question-#{question.id}"
     = render 'votes/rating', votable: question
     - if signed_in? && can?(:create_vote, question)
       = render 'votes/vote', vote: question.vote_of(current_user), votable: question
+      
+  - if signed_in?
+    = render 'subscriptions/subscription', question: question
 
   - if question.award.present?
     .question-award
