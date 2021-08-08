@@ -1,0 +1,3 @@
+<% unless @subscription.persisted? %>
+  $(".subscription").html('<%= link_to "Subscribe", question_subscription_path(question_id: @subscription.question_id), method: :post, remote: true %>')
+<% end %>
