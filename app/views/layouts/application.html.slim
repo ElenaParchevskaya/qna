@@ -13,6 +13,9 @@ html
     p
       = render '/shared/alerts'
 
+    = link_to 'Questions page', root_path
+    = link_to 'Search page', search_path
+
     - if current_user
       = link_to 'Sign out', destroy_user_session_path, method: :delete
       = link_to 'My awards', awards_path

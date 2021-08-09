@@ -1,0 +1,3 @@
+- resources.each do |resource|
+  = f.label resource
+  = f.check_box :resources, { multiple: true, id: resource, checked: params[:resources].to_a.include?(resource.to_s)}, resource, nil

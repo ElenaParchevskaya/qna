@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   end
 
   use_doorkeeper
+  
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
 
   resources :questions do
@@ -23,6 +24,7 @@ Rails.application.routes.draw do
   resources :votes, only: %i[create destroy]
   resources :comments, only: :create
   resource :user, only: %i[edit update]
+  resource :search, only: [:show]
 
   namespace :api do
     namespace :v1 do

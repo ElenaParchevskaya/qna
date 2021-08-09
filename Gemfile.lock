@@ -123,7 +123,12 @@ GEM
     concurrent-ruby (1.1.9)
     connection_pool (2.2.5)
     crass (1.0.6)
-    database_rewinder (0.9.6)
+    database_cleaner (2.0.1)
+      database_cleaner-active_record (~> 2.0.0)
+    database_cleaner-active_record (2.0.1)
+      activerecord (>= 5.a)
+      database_cleaner-core (~> 2.0.0)
+    database_cleaner-core (2.0.1)
     diff-lcs (1.4.4)
     doorkeeper (5.5.2)
       railties (>= 5)
@@ -168,9 +173,12 @@ GEM
     hashie (4.1.0)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
+    innertube (1.1.0)
     jbuilder (2.11.2)
       activesupport (>= 5.0.0)
     jmespath (1.4.0)
+    joiner (0.6.0)
+      activerecord (>= 6.1.0)
     jquery-rails (4.4.0)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -191,6 +199,7 @@ GEM
       mini_mime (>= 0.1.1)
     marcel (1.0.1)
     method_source (1.0.0)
+    middleware (0.1.0)
     mini_mime (1.1.0)
     mini_portile2 (2.5.3)
     minitest (5.14.4)
@@ -201,6 +210,10 @@ GEM
     multipart-post (2.1.1)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
+    mysql2 (0.4.10)
+    mysql2 (0.4.10-x64-mingw32)
+    mysql2 (0.4.10-x86-mingw32)
+    mysql2 (0.4.10-x86-mswin32-60)
     nio4r (2.5.7)
     nio4r (2.5.7-java)
     nokogiri (1.11.7)
@@ -298,6 +311,7 @@ GEM
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
+    riddle (2.4.2)
     rspec-core (3.10.1)
       rspec-support (~> 3.10.0)
     rspec-expectations (3.10.1)
@@ -360,6 +374,13 @@ GEM
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
     temple (0.8.2)
+    thinking-sphinx (5.2.0)
+      activerecord (>= 4.2.0)
+      builder (>= 2.1.2)
+      innertube (>= 1.0.2)
+      joiner (>= 0.3.4)
+      middleware (>= 0.1.0)
+      riddle (~> 2.3)
     thor (1.1.0)
     tilt (2.0.10)
     turbolinks (5.2.1)
@@ -416,7 +437,7 @@ DEPENDENCIES
   capybara (>= 3.26)
   capybara-email
   cocoon
-  database_rewinder
+  database_cleaner
   devise!
   doorkeeper
   dotenv-rails
@@ -427,6 +448,7 @@ DEPENDENCIES
   launchy
   letter_opener
   listen (~> 3.3)
+  mysql2
   oj
   omniauth
   omniauth-github
@@ -445,6 +467,7 @@ DEPENDENCIES
   sinatra
   slim-rails
   spring
+  thinking-sphinx
   turbolinks (~> 5)
   tzinfo-data
   validate_url

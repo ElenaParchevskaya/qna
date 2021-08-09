@@ -55,6 +55,9 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'dotenv-rails'
   gem "letter_opener"
+
+  gem 'mysql2'
+  gem 'thinking-sphinx'
 end
 
 group :development do
@@ -79,7 +82,7 @@ group :test do
   gem 'shoulda-matchers'
   gem 'rails-controller-testing'
   gem 'launchy'
-  gem 'database_rewinder'
+  gem 'database_cleaner'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
