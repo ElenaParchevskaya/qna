@@ -1,0 +1,15 @@
+= form_with url: search_path, method: :get, local: true do |f|
+  = f.label :query
+  = f.text_field :query
+  = render partial: "resources_checkboxes", locals: {f: f, resources: %w[question answer comment user] }
+  = f.submit 'Search'
+
+- if params[:query].present?
+  - if @records.nil?
+    h2 You should choose type of results
+  - else
+    - if @records.any?
+      h2 Results
+      = render @records
+    - else
+      h2 No entries found

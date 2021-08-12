@@ -62,7 +62,7 @@ class QuestionsController < ApplicationController
     return unless @question.valid?
 
     question_item = ApplicationController.render(
-      partial: 'questions/question_item',
+      partial: 'questions/question',
       locals: { question: @question }
     )
 
