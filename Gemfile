@@ -50,6 +50,8 @@ gem 'sinatra', require: false
 gem 'whenever', require: false
 
 gem 'mini_racer'
+gem 'mysql2'
+gem 'thinking-sphinx'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -57,9 +59,6 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'dotenv-rails'
   gem "letter_opener"
-
-  gem 'mysql2'
-  gem 'thinking-sphinx'
 end
 
 group :development do
