@@ -3,5 +3,6 @@ h1 Questions
 p= link_to 'Ask question', new_question_path
 
 ul.questions
-  - @questions.each do |question|
-    li = render question
+  - cache collection_cache_helper_for(:question)
+    - @questions.each do |question|
+      li = render question

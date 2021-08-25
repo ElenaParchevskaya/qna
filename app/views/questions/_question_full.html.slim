@@ -1,37 +1,38 @@
-div.question id="question-#{question.id}"
-  .question-errors
-    = render 'shared/errors'
+- cache question do
+  div.question id="question-#{question.id}"
+    .question-errors
+      = render 'shared/errors'
 
-  h4 = "Title: #{question.title}"
-  div = "Author: #{question.author.email}"
-  div = question.body
+    h4 = "Title: #{question.title}"
+    div = "Author: #{question.author.email}"
+    div = question.body
 
-  .question-links
-    = render question.links
+    .question-links
+      = render question.links
 
-  -if question.files.attached?
-    = render partial: 'attachments/attachment', collection: question.files
+    -if question.files.attached?
+      = render partial: 'attachments/attachment', collection: question.files
 
-  div id="votable-question-#{question.id}"
-    = render 'votes/rating', votable: question
-    - if signed_in? && can?(:create_vote, question)
-      = render 'votes/vote', vote: question.vote_of(current_user), votable: question
+    div id="votable-question-#{question.id}"
+      = render 'votes/rating', votable: question
+      - if signed_in? && can?(:create_vote, question)
+        = render 'votes/vote', vote: question.vote_of(current_user), votable: question
 
-  - if signed_in?
-    = render 'subscriptions/subscription', question: question
+    - if signed_in?
+      = render 'subscriptions/subscription', question: question
 
-  - if question.award.present?
-    .question-award
-      h3 = "For the best answer you will receive #{question.award.name}"
-      .question-award-image
-        = image_tag question.award.image, size:"250x250"
+    - if question.award.present?
+      .question-award
+        h3 = "For the best answer you will receive #{question.award.name}"
+        .question-award-image
+          = image_tag question.award.image, size:"250x250"
 
-  - if can?(:destroy, question)
-    div = link_to 'Delete question', question_path(question), method: :delete
-  - if can?(:update, question)
-    div = link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
+    - if can?(:destroy, question)
+      div = link_to 'Delete question', question_path(question), method: :delete
+    - if can?(:update, question)
+      div = link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
 
-  div.hidden
-    = render 'question_form', question: question, local: false
+    div.hidden
+      = render 'question_form', question: question, local: false
 
-  = render "comments/comments", commentable: question 
+    = render "comments/comments", commentable: question
